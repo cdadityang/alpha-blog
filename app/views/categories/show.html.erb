@@ -1,0 +1,26 @@
+<h1 class="text-center">All articles of <%= @category.name %></h1>
+
+<% @category.articles.each do |categoryarticle| %>
+   <div class="row">
+        <div class="col-xs-8 col-xs-offset-2">
+            <div class="well well-lg">
+                <div class="article-title">
+                    <%= link_to categoryarticle.title, article_path(categoryarticle) %>
+                </div>
+                <div class="article-body">
+                    <%= truncate(categoryarticle.description, length: 100) %>
+                    <div class="article-meta-details">
+                        <small>Created by: <%= categoryarticle.user.username %>, Created At <%= time_ago_in_words(categoryarticle.created_at) %> ago, Updated at <%= time_ago_in_words(categoryarticle.updated_at) %> ago
+                        </small>
+                    </div>
+                </div>
+                <% if logged_in? && (current_user == categoryarticle.user || current_user.admin?) %>
+                    <div class="article-actions">
+                        <%= link_to 'Edit Article', edit_article_path(categoryarticle), class: "btn btn-xs btn-primary" %>
+                        <%= link_to 'Delete Article', article_path(categoryarticle), method: :delete, data: { confirm: "Sure?"}, class: "btn btn-xs btn-danger" %>
+                    </div>
+                <% end %>
+            </div>
+        </div>
+    </div>
+<% end %>
